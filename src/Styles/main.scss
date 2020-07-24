@@ -1,0 +1,16 @@
+@import './Partials/home';
+@import './Partials/roomform';
+// TODO: import font
+
+html, body, #root {
+    margin:0;
+    padding: 0;
+    height: 100vh;
+}
+
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
