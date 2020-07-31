@@ -1,6 +1,6 @@
-const Room = require('./model');
-const Msg = require('../Message/model')
-const getRoomMessages = require('../Message/routines').getAllMessages;
+const Room = require('./model.ts');
+const Msg = require('../Message/model.ts')
+const getRoomMessages = require('../Message/routines.ts').getAllMessages;
 const crypto_string = require('crypto-random-string')
 
 // TODO: declare types

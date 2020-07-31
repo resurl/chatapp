@@ -1,4 +1,4 @@
-const Message = require('./model');
+const Message = require('./model.ts');
 
 // get all messages in a room 
 const getAllMessages = (room_id: number) => {

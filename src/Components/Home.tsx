@@ -1,12 +1,18 @@
 import React from 'react'
-import RoomForm from './RoomForm'
+import RoomForm from './RoomForm';
+import {getRoom} from './api';
 
-const handleJoin = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLTextAreaElement;
-    if (e.key === 'Enter') console.log(target.value)
-}
 
 export default function Home() {
+
+    const handleJoin = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const target = e.target as HTMLTextAreaElement;
+        if (e.key === 'Enter') {
+            console.log(target.value)
+            getRoom(target.value)
+        }
+    }
+
     return (
         <div className="Home">
             <div className="Home__join">

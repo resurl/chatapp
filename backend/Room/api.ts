@@ -1,6 +1,6 @@
-const createRm = require('./routines').createRoom;
-const getRm = require('./routines').getRoom;
-const deleteRm = require('./routines').deleteRoom;
+const createRm = require('./routines.ts').createRoom;
+const getRm = require('./routines.ts').getRoom;
+const deleteRm = require('./routines.ts').deleteRoom;
 
 const roomAPI = (app) => {
     
@@ -15,6 +15,7 @@ const roomAPI = (app) => {
     // gets room from api
     app.get('/api/room/:roomid', (req,res) => {
         // TODO: call getRoom routine here
+        console.log('success!')
     });
 
     // deletes room api, including all messages within 
