@@ -7,14 +7,16 @@ const crypto_string = require('crypto-random-string')
 
 // get room info
 const getRoom = (room_slug: string) => {
+    let findObject = {room_slug: room_slug} 
     return new Promise((resolve,reject) => {
         Room
-        .findOne(room_slug)
+        .findOne(findObject)
+        .lean()
         .exec((err, room) => {
             if (err) {console.error(err); reject(err)}
             else if (!room) reject(null)
             else {
-                getRoomMessages(room._id).then(
+                getRoomMessages(room.room_slug).then(
                     (msgs) => {
                         room.messages = msgs;
                         resolve(room)

@@ -1,6 +1,15 @@
-const createRm = require('./routines.ts').createRoom;
-const getRm = require('./routines.ts').getRoom;
-const deleteRm = require('./routines.ts').deleteRoom;
+const createRm = require('./routines').createRoom;
+const getRm = require('./routines').getRoom;
+const deleteRm = require('./routines').deleteRoom;
+const getMsgs = require('../Message/routines').getAllMessages;
+
+/**
+ * Room structured like
+ *  - name
+ *  - creation date
+ *  - (optional) password
+ *  - messages [collection/query]
+ */
 
 const roomAPI = (app) => {
     
@@ -13,9 +22,12 @@ const roomAPI = (app) => {
     });
 
     // gets room from api
-    app.get('/api/room/:roomid', (req,res) => {
-        // TODO: call getRoom routine here
-        console.log('success!')
+    app.get('/api/room/:room_slug', (req,res) => {
+        const { room_slug } = req.params
+        getRm(room_slug).then(
+            (result) => { res.send(result) },
+            (err) => { res.send(err) }
+        )
     });
 
     // deletes room api, including all messages within 

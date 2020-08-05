@@ -1,27 +1,13 @@
 import React from 'react';
-import { 
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from 'react-router-dom';
-import Home from './Components/Home';
-import Room from './Components/Room';
-import NotFound from './Components/NotFound';
+import {BrowserRouter} from 'react-router-dom';
+import View from './View';
 import './App.css';
 import './Styles/main.css'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path='/' component={Home} />
-          <Route path='/:roomid' component={Room} />
-          <Route path='*' component={NotFound} />
-        </Switch>
-      </Router>
-    </div>
-  );
+    <BrowserRouter>
+      <View />
+    </BrowserRouter>
+  )
 }
-
-export default App;

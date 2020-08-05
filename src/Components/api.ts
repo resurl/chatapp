@@ -12,7 +12,6 @@ export const postRoom = (room: Room) => {
     return axios.post(room)
 }
 
-export const getRoom = (room_slug: string) => {
-    console.log('axios call')
-    return axios.get(`/api/room/${room_slug}`, room_slug)
+export const getRoom = (roomid: string) => {
+    return axios.get(`/api/room/${roomid}`, roomid)
 }

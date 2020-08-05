@@ -1,3 +1,4 @@
+//@ts-ignore
 const mongoose = require('mongoose')
 
 const msgSchema = new mongoose.Schema({
@@ -5,10 +6,7 @@ const msgSchema = new mongoose.Schema({
         type: String,
         required: [true, 'No message author given']
     },
-    room_id: {
-        type: mongoose.Schema.ObjectId,
-        ref:'Room'
-    },
+    room_slug: String,
     timestamp: {
         type: Date,
         default: Date.now,
@@ -20,4 +18,4 @@ const msgSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Message', msgSchema);
+module.exports = mongoose.model('Message', msgSchema, 'message');

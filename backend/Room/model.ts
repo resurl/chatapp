@@ -13,10 +13,10 @@ const roomSchema = new mongoose.Schema({
         required: [true, 'Creation date needed']
     },
     password: String,
-    expiry: {
+    expires: {
         type: Date,
-        default: new Date(new Date().getTime() + (2*24*60*60*1000))
+        default: new Date(new Date().getTime() + (2*24*60*60*1000)) // expires in 2 days (2* 24hrs * 60 min * 60 s * 1000ms)
     }
-})
+}, {collection: 'Room'})
 
 module.exports = mongoose.model('Room', roomSchema);
