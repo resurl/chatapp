@@ -22,8 +22,9 @@ function View() {
 
   return (
     <Switch>
-        <Route path='/' render={() => <Home loadRoom={loadRoom}/>} />
+        <Route exact path='/' render={() => <Home loadRoom={loadRoom}/>} />
         <Route path='/:roomid' render={(renderProps)=> <Room {...renderProps} />} />
+        <Route path='/404' component={NotFound} />
         <Route path='*' component={NotFound} />
     </Switch>
   );

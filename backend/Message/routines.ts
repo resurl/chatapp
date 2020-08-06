@@ -14,7 +14,6 @@ const getAllMessages = (room_slug: string) => {
     })    
 }
 
-
 module.exports = {
     getAllMessages
 }

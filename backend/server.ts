@@ -20,6 +20,7 @@ db.once('open', function () {
  */
 roomRoutes(app);
 msgRoutes(app);
+
 http.listen(PORT, function () {
     console.log("Server listening on port " + PORT);
 });

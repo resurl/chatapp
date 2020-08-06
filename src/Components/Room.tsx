@@ -1,22 +1,30 @@
-import React, {useState,useEffect} from 'react'
-//import {useLocation} from 'react-router-dom'
+import React from 'react'
+import Message from './Message'
 
-const createMessageLog = (msgs: Object) => {
-    // create message objects
+interface Message {
+    author: string,
+    timestamp: Date,
+    body: string
 }
 
-function Room(props:any) {
-    const [name, setName] = useState('undefined')
-    const [messages, setMessages] = useState({})
+const createMessageLog = (msgs: Message[]) => {
 
-    //let location = useLocation();
-   
-    // TODO: on mount, instantiate name, messages.
+
+    return msgs.map((msg: Message, idx:number)=> 
+        <Message author={msg.author} time={formatDate(msg.timestamp)} body={msg.body} key={idx} />)
+}
+
+function formatDate(date:Date): string {
+    let curr = Date.now() - date.getTime()
+    return ''
+}
+
+function Room(props: any) {
 
     return (
         <div className='Room'>
-            <h1>{name}</h1>
-            <section></section>
+            <h1>{props.location.state.room_slug}</h1>
+            <section>{createMessageLog(props.location.state.messages)}</section>
         </div>
     )
 }
