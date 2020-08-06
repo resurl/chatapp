@@ -1,0 +1,20 @@
+.Message {
+    border-radius: 3em;
+    background-color: #d3d3d3;
+    margin: 1em;
+    &__head {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}

@@ -15,7 +15,6 @@ function View() {
 
   function loadRoom(roomid: string) {
     getRoom(roomid).then((data: any) => {
-      console.log(data.data)
       history.push(`/${roomid}`, data.data)
     })
   }
@@ -23,8 +22,8 @@ function View() {
   return (
     <Switch>
         <Route exact path='/' render={() => <Home loadRoom={loadRoom}/>} />
-        <Route path='/:roomid' render={(renderProps)=> <Room {...renderProps} />} />
         <Route path='/404' component={NotFound} />
+        <Route path='/:roomid' render={(renderProps)=> <Room {...renderProps} />} />
         <Route path='*' component={NotFound} />
     </Switch>
   );

@@ -15,3 +15,7 @@ export const postRoom = (room: Room) => {
 export const getRoom = (roomid: string) => {
     return axios.get(`/api/room/${roomid}`, roomid)
 }
+
+export const sendMessage = (msg: any) => {
+    return axios.post(msg)
+}

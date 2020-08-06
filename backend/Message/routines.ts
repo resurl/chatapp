@@ -14,6 +14,27 @@ const getAllMessages = (room_slug: string) => {
     })    
 }
 
+/**
+ * msg_obj {
+ *  author: string
+ *  body: string,
+ *  room_slug: string
+ * }
+ */
+
+const createMessage = (msg_obj: any) => {
+    msg_obj.time = new Date()
+    msg_obj.author = 'nobody' // TODO: remove when you implement usernames 
+    return new Promise((resolve, reject) => {
+        let newMsg = new Message(msg_obj)
+        newMsg.save((err) => {
+            if (err) { console.error(err) ; reject(err) }
+            else { resolve(newMsg) }
+        })
+    })   
+}
+
 module.exports = {
-    getAllMessages
+    getAllMessages,
+    createMessage
 }
