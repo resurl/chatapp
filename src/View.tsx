@@ -14,9 +14,10 @@ function View() {
   let history = useHistory();
 
   function loadRoom(roomid: string) {
-    getRoom(roomid).then((data: any) => {
+    history.push(`/${roomid}`)
+    /* getRoom(roomid).then((data: any) => {
       history.push(`/${roomid}`, data.data)
-    })
+    }) */
   }
 
   return (
