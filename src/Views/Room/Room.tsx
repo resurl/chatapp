@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import Message from './Message'
-import { Redirect } from 'react-router-dom'
-import { postMessage, getRoom } from '../api'
+import React, { useState, useEffect } from 'react';
+import Message from './Message';
+import Auth from './Auth';
+import { Redirect } from 'react-router-dom';
+import { postMessage, getRoom } from '../api';
+import { encrypt } from '../encryption';
 
 interface Message {
     author: string,
@@ -20,23 +22,24 @@ const createMessageLog = (msgs: Message[]) : JSX.Element[] => {
 
 function Room(props: any) {
     const [msgs, setMsgs] = useState([] as JSX.Element[])
-    const [newMsgs, setNewMsgs] = useState([] as any[])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [name, setName] = useState('undefined')
     const [authenticated, setAuthenticated] = useState(true)
+    const [password, setPassword] = useState('')
 
     // on mount, get room. when it's done, set loaded to true
     useEffect(()=> {
         let unmounted = false
-
         setLoading(true)
         getRoom(props.location.pathname)
         .then((data: any) => {
-            console.log(data)
+            let state = data.data
+            console.log(state)
             if (!unmounted) {
-                setMsgs(createMessageLog(data.data.messages));
-                setName(data.data.room_slug)
+                setMsgs(createMessageLog(state.messages));
+                setName(state.room_slug);
+                if (state.password) setPassword(state.password);
             }
         })
         .catch( () => {
@@ -44,17 +47,25 @@ function Room(props: any) {
                 setError(true)
         })
         .finally( () => {
-            // TODO: room password authentication
-            if (!unmounted)
+            if (!unmounted) {
+                if (password === ('' || undefined)) {
+                    setAuthenticated(true)
+                }
                 setLoading(false);
+            }
         })
         
         return () => { unmounted = true }
     }, [])
 
+    useEffect(() => {
+        setAuthenticated(false)
+    },[password])
+
     const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const target = e.target as HTMLTextAreaElement
-        if (e.key === 'Enter' && target.value != '') {
+        if (e.key === 'Enter' && target.value !== '') {
+            
             let newMessage = {
                 room_slug: 'test',
                 author: 'testguy',
@@ -69,18 +80,28 @@ function Room(props: any) {
             postMessage(newMessage)
             
             setMsgs([...msgs, newMsgJSX]);
-            setNewMsgs([...newMsgs, newMessage])
-            
             target.value = ''
         }
     }
 
+    const checkPassword = (value: string) => {
+        let salt = password.charAt(0) + password.slice(11)
+        let encryptedInput = encrypt(value,salt)
+        if (encryptedInput===password) {
+            setAuthenticated(true)
+        }
+    }
+
     // TODO: create Loading Messages stand-in
-    // TODO: create password screen if room's password field is defined
     return (
         <div className='Room'>
             <h1>{name}</h1>
-            {loading ? <p>Loading...</p> : <section className='Room__msgs'>{msgs}</section> }
+
+            {loading ? 
+                <p>Loading...</p> : 
+                (authenticated ? 
+                    <section className='Room__msgs'>{msgs}</section> :
+                    <Auth pw={password} callback={checkPassword}/>)}
             <div className='Room__input'>
                 <input type='text' placeholder='Start typing...' onKeyDown={sendMessage} autoFocus={true} />
             </div>

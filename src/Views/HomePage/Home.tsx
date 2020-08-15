@@ -5,7 +5,6 @@ interface Props {
     loadRoom: Function
 }
 
-
 export default function Home(props: Props) {
 
     const handleJoin = (e: React.KeyboardEvent<HTMLInputElement>) => {
