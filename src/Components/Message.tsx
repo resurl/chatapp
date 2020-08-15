@@ -9,8 +9,13 @@ interface MessageProps {
 function formatDate(date:string): string {
     let then = new Date(date)
     let curr = Date.now() - then.getTime()
-    // @ts-ignore
-    let options = new Intl.DateTimeFormat('en', {timeStyle:'short'})
+
+    // HH:MM AM/PM format
+    let options = new Intl.DateTimeFormat('en', {
+        hour: 'numeric', 
+        minute: 'numeric'
+    })
+    
     // if the message's timestamp is more than half a day old, timestamp is in form DD-MM-YYYY, HH:MM
     if (curr > 1000*60*60*12)
         options = new Intl.DateTimeFormat('en-GB')

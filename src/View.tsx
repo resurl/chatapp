@@ -15,9 +15,6 @@ function View() {
 
   function loadRoom(roomid: string) {
     history.push(`/${roomid}`)
-    /* getRoom(roomid).then((data: any) => {
-      history.push(`/${roomid}`, data.data)
-    }) */
   }
 
   return (

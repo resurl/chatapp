@@ -9,59 +9,79 @@ interface Message {
     body: string
 }
 
-const createMessageLog = (msgs: Message[]) => {
+const config = {
+    key: '@session'
+}
+
+const createMessageLog = (msgs: Message[]) : JSX.Element[] => {
     return msgs.map((msg: Message, idx:number)=> 
         <Message author={msg.author} time={msg.timestamp} body={msg.body} key={idx} />)
 }
 
 function Room(props: any) {
-    const [msgs, setMsgs] = useState([])
+    const [msgs, setMsgs] = useState([] as JSX.Element[])
+    const [newMsgs, setNewMsgs] = useState([] as any[])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [name, setName] = useState('undefined')
 
-    useEffect(() => {
-        //@ts-ignore
-        getRoom(props.location.pathname).then((data) => {
-            let msgLog = data.data.messages;
-            if (msgLog)
-                setMsgs(data)
+    // on mount, get room. when it's done, set loaded to true
+    useEffect(()=> {
+        let unmounted = false
+
+        setLoading(true)
+        getRoom(props.location.pathname)
+        .then((data: any) => {
+            console.log(data)
+            if (!unmounted) {
+                setMsgs(createMessageLog(data.data.messages));
+                setName(data.data.room_slug)
+            }
         })
-    },[props.location.pathname])
+        .catch( () => {
+            if (!unmounted)
+                setError(true)
+        })
+        .finally( () => {
+            if (!unmounted)
+                setLoading(false)
+        })
+        
+        return () => { unmounted = true }
+    }, [])
 
     const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const target = e.target as HTMLTextAreaElement
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && target.value != '') {
             let newMessage = {
                 room_slug: 'test',
                 author: 'testguy',
                 timestamp: new Date(),
                 body: target.value
             }
-        
+            
             let newMsgJSX = <Message author={newMessage.author} time={newMessage.timestamp.toString()} 
                 body={newMessage.body} key={msgs.length+1} />;
             
             // post message to db
             postMessage(newMessage)
             
-            // @ts-ignore
             setMsgs([...msgs, newMsgJSX]);
+            setNewMsgs([...newMsgs, newMessage])
+            
             target.value = ''
         }
     }
 
-    if (props.location.state === (''||undefined)) {
-        return (<Redirect to='/404' />)
-    }
-    
-    else {
-        return (
+    return (
         <div className='Room'>
-            <h1>{props.location.state.room_slug}</h1>
-            <section className='Room__msgs'>{msgs}</section>
+            <h1>{name}</h1>
+            {loading ? <p>Loading...</p> : <section className='Room__msgs'>{msgs}</section> }
             <div className='Room__input'>
                 <input type='text' placeholder='Start typing...' onKeyDown={sendMessage} autoFocus={true} />
             </div>
-        </div>
-    )}
+            {error && <Redirect to='/' />}
+        </div>);
 }
 
 export default Room;
