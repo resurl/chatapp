@@ -4,10 +4,9 @@ import {
   Switch,
   useHistory
 } from 'react-router-dom';
-import {getRoom} from './Components/api';
-import Home from './Components/Home';
-import Room from './Components/Room';
-import NotFound from './Components/NotFound';
+import Home from './HomePage/Home';
+import Room from './Room/Room';
+import NotFound from './NotFound';
 
 function View() {
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Message from './Message'
 import { Redirect } from 'react-router-dom'
-import { postMessage, getRoom } from './api'
+import { postMessage, getRoom } from '../api'
 
 interface Message {
     author: string,
@@ -24,6 +24,7 @@ function Room(props: any) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [name, setName] = useState('undefined')
+    const [authenticated, setAuthenticated] = useState(true)
 
     // on mount, get room. when it's done, set loaded to true
     useEffect(()=> {
@@ -43,8 +44,9 @@ function Room(props: any) {
                 setError(true)
         })
         .finally( () => {
+            // TODO: room password authentication
             if (!unmounted)
-                setLoading(false)
+                setLoading(false);
         })
         
         return () => { unmounted = true }
@@ -73,6 +75,8 @@ function Room(props: any) {
         }
     }
 
+    // TODO: create Loading Messages stand-in
+    // TODO: create password screen if room's password field is defined
     return (
         <div className='Room'>
             <h1>{name}</h1>
