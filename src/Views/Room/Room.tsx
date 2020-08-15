@@ -31,11 +31,12 @@ function Room(props: any) {
     // on mount, get room. when it's done, set loaded to true
     useEffect(()=> {
         let unmounted = false
+
         setLoading(true)
         getRoom(props.location.pathname)
         .then((data: any) => {
+            // set room properties according to fetched data
             let state = data.data
-            console.log(state)
             if (!unmounted) {
                 setMsgs(createMessageLog(state.messages));
                 setName(state.room_slug);
@@ -48,9 +49,6 @@ function Room(props: any) {
         })
         .finally( () => {
             if (!unmounted) {
-                if (password === ('' || undefined)) {
-                    setAuthenticated(true)
-                }
                 setLoading(false);
             }
         })
@@ -59,7 +57,9 @@ function Room(props: any) {
     }, [])
 
     useEffect(() => {
-        setAuthenticated(false)
+        // this will only fire upon mount
+        if (password !== '')
+            setAuthenticated(false)
     },[password])
 
     const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ function Room(props: any) {
         if (e.key === 'Enter' && target.value !== '') {
             
             let newMessage = {
-                room_slug: 'test',
+                room_slug: name,
                 author: 'testguy',
                 timestamp: new Date(),
                 body: target.value
@@ -79,6 +79,7 @@ function Room(props: any) {
             // post message to db
             postMessage(newMessage)
             
+            // render new message to chat logs
             setMsgs([...msgs, newMsgJSX]);
             target.value = ''
         }
@@ -87,8 +88,11 @@ function Room(props: any) {
     const checkPassword = (value: string) => {
         let salt = password.charAt(0) + password.slice(11)
         let encryptedInput = encrypt(value,salt)
-        if (encryptedInput===password) {
+        if (encryptedInput===password && !authenticated) {
             setAuthenticated(true)
+        } else {
+            // TODO: need createRoom to work in order to test password check
+            console.log('too bad so sad :))))')
         }
     }
 
@@ -102,6 +106,7 @@ function Room(props: any) {
                 (authenticated ? 
                     <section className='Room__msgs'>{msgs}</section> :
                     <Auth pw={password} callback={checkPassword}/>)}
+
             <div className='Room__input'>
                 <input type='text' placeholder='Start typing...' onKeyDown={sendMessage} autoFocus={true} />
             </div>

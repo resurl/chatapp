@@ -3,10 +3,10 @@ const CryptoJS = require('crypto-js')
 
 export function encrypt(value: string, salt?: string) : string {
     if (salt) {
-        let saltedEncrypt = CryptoJS.AES.encrypt(value, salt)
+        let saltedEncrypt = CryptoJS.AES.encrypt(value, salt).toString()
         return saltedEncrypt.charAt(0) + salt + saltedEncrypt.slice(1);
     }
-    
+
     let secret = crypt({length: 10})
     let encrypted = CryptoJS.AES.encrypt(value, secret).toString()
     return encrypted.charAt(0) + secret + encrypted.slice(1);
