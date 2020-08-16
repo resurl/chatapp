@@ -3,7 +3,8 @@ import React from 'react'
 interface MessageProps {
     author: string,
     time: string,
-    body: string
+    body: string,
+    isUser: boolean
 }
 
 function formatDate(date:string): string {
@@ -25,8 +26,9 @@ function formatDate(date:string): string {
 }
 
 function Message(props: MessageProps) {
+    const fromUserStyle = props.isUser ? '3em 3em 0 3em' : '0 3em 3em 3em'
     return (
-        <div className="Message">
+        <div className="Message" style={{borderRadius: fromUserStyle}}>
             <div className="Message__head">
                 <h1>{props.author}</h1>
                 <p>{formatDate(props.time)}</p> 
@@ -34,7 +36,6 @@ function Message(props: MessageProps) {
             <p className="Message_body">
                 {props.body}
             </p>
-
         </div>
     )
 }

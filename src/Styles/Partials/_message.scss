@@ -1,10 +1,13 @@
 .Message {
-    border-radius: 3em;
-    background-color: #d3d3d3;
+    background-color: palevioletred;
+    font-size: 0.75em;
     margin: 1em;
+    word-wrap: break-word;
+    max-width: 100%;
+    min-height: 3.5em;
     &__head {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
     }
 }

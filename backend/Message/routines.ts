@@ -24,7 +24,6 @@ const getAllMessages = (room_slug: string) => {
 
 const createMessage = (msg_obj: any) => {
     msg_obj.time = new Date()
-    msg_obj.author = 'nobody' // TODO: remove when you implement usernames 
     return new Promise((resolve, reject) => {
         let newMsg = new Message(msg_obj)
         newMsg.save((err) => {
