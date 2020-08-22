@@ -1,13 +1,22 @@
 .Home {
     background-color: #fff;
-    padding: 3em;
-    border-radius: 8%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    &__join{
+    h1 {
+        margin-bottom: 0.5em;
+    }
+    &__join {
         margin-bottom: 1em;
+    }
+    &__create {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        text-align: center;
     }
 }
 

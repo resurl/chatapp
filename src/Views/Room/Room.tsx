@@ -16,43 +16,43 @@ const config = {
     nameKey: 'user'
 }
 
-
-
 function Room(props: any) {
-    const [msgs, setMsgs] = useState([] as JSX.Element[])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
-    const [name, setName] = useState('undefined')
-    const [authenticated, setAuthenticated] = useState(true)
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
-    const [hasUsername, setHasUser] = useState(false)
+    const [msgs, setMsgs] = useState([] as any[]);
+    const [msgJSX, setMsgJSX] = useState([] as JSX.Element[]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [name, setName] = useState('undefined');
+    const [authenticated, setAuthenticated] = useState(true);
+    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [hasUsername, setHasUser] = useState(false);
 
     // on mount, get room. when it's done, set loaded to true
     useEffect(()=> {
-        let unmounted = false
+        let unmounted = false;
+        let name = sessionStorage.getItem(config.nameKey);
 
-        let name = sessionStorage.getItem(config.nameKey)
         if (name && !unmounted) {
-            console.log(name)
-            setUsername(name)
-            setHasUser(true)
+            //console.log(name);
+            setUsername(name);
+            setHasUser(true);
         }
 
-        setLoading(true)
+        setLoading(true);
+
         getRoom(props.location.pathname)
         .then((data: any) => {
             // set room properties according to fetched data
-            let state = data.data
+            let state = data.data;
             if (!unmounted) {
-                setMsgs(createMessageLog(state.messages));
+                setMsgs(state.messages);
                 setName(state.room_slug);
                 if (state.password) setPassword(state.password);
             }
         })
         .catch( () => {
             if (!unmounted)
-                setError(true)
+                setError(true);
         })
         .finally( () => {
             if (!unmounted) {
@@ -60,21 +60,26 @@ function Room(props: any) {
             }
         })
 
-        return () => { unmounted = true }
+        return () => { unmounted = true; }
     }, [])
 
     useEffect(() => {
         // this should only fire upon mount
         if (password !== '')
-            setAuthenticated(false)
+            setAuthenticated(false);
     },[password])
+
+    useEffect(() => {
+        if (msgs.length > 1) 
+            setMsgJSX(createMessageLog(msgs))
+    },[msgs])
 
     const createMessageLog = (msgs: Message[]) : JSX.Element[] => {
         return msgs.map((msg: Message, idx:number)=> 
             <Message author={msg.author} 
                 time={msg.timestamp} 
                 body={msg.body} 
-                isUser={msg.author == username}
+                isUser={msg.author === username}
                 key={idx} />)
     }
 
@@ -90,14 +95,14 @@ function Room(props: any) {
     }
 
     const usernameInput = (e: React.ChangeEvent) => {
-        const target = e.target as HTMLTextAreaElement
-        setUsername(target.value)
+        const target = e.target as HTMLTextAreaElement;
+        setUsername(target.value);
     }
 
     const confirmUsername = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            setHasUser(true)
-            sessionStorage.setItem(config.nameKey, username)
+            setHasUser(true);
+            sessionStorage.setItem(config.nameKey, username);
         }
     }
 
@@ -105,6 +110,7 @@ function Room(props: any) {
         const target = e.target as HTMLTextAreaElement
         if (e.key === 'Enter' && target.value !== '') {
             
+            // create document for db
             let newMessage = {
                 room_slug: name,
                 author: username,
@@ -112,17 +118,11 @@ function Room(props: any) {
                 body: target.value
             }
             
-            let newMsgJSX = <Message author={newMessage.author} 
-                time={newMessage.timestamp.toString()} 
-                body={newMessage.body} 
-                isUser={true}
-                key={msgs.length+1} />;
-            
             // post message to db
             postMessage(newMessage)
             
             // render new message to chat logs
-            setMsgs([...msgs, newMsgJSX]);
+            setMsgs([...msgs, newMessage]);
             target.value = ''
         }
     }
@@ -150,7 +150,10 @@ function Room(props: any) {
                     (authenticated ? 
                         (username==='' || !hasUsername ? 
                             getUsername() :
-                            <section >{msgs}</section>):
+                            ((msgs.length > 1) ? 
+                                <div className='Room__display-wrapper'>{msgJSX}</div>:
+                                <Standin />)
+                        ):
                         <Auth pw={password} callback={checkPassword}/>)
                 }
             </div>

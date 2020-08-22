@@ -1,0 +1,9 @@
+.RoomForm {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+    &__input {
+        margin-bottom:0.5em;
+    }
+}

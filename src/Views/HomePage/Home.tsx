@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import RoomForm from './RoomForm';
 
 interface Props {
@@ -16,6 +16,7 @@ export default function Home(props: Props) {
 
     return (
         <div className="Home">
+            <h1>Chat App</h1>
             <div className="Home__join">
                 <h3 className="Home__join-header">Join a chatroom</h3>
                 <input type='text' placeholder='Enter an ID here' onKeyDown={handleJoin}/>

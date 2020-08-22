@@ -1,7 +1,6 @@
 .Home {
   background-color: #fff;
-  padding: 3em;
-  border-radius: 8%;
+  height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -17,18 +16,57 @@
           align-items: center;
 }
 
+.Home h1 {
+  margin-bottom: 0.5em;
+}
+
 .Home__join {
   margin-bottom: 1em;
+}
+
+.Home__create {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: center;
 }
 
 h3 {
   margin: 0 0 1em 0;
 }
 
+.RoomForm {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+.RoomForm__input {
+  margin-bottom: 0.5em;
+}
+
 .Message {
   background-color: palevioletred;
   font-size: 0.75em;
-  margin: 1em;
+  margin: 0.5em;
   word-wrap: break-word;
   max-width: 100%;
   min-height: 3.5em;
@@ -60,6 +98,9 @@ h1 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  padding: 1em 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -68,14 +109,14 @@ h1 {
       -ms-flex-align: center;
           align-items: center;
   background-color: #f5f5f5;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 }
 
 .Room__display {
   max-height: 100%;
   width: 50%;
-  overflow: scroll;
+  overflow: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -83,6 +124,20 @@ h1 {
   -webkit-box-direction: reverse;
       -ms-flex-direction: column-reverse;
           flex-direction: column-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Room__display-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow: scroll;
 }
 
 html, body, #root {

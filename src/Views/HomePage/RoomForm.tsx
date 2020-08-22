@@ -25,7 +25,7 @@ export default function RoomForm() {
     // form fields 'return axios.post('/api/discussion/newDiscussion', discussion);'
     return (
         <form onSubmit={handleSubmit} className='RoomForm'>
-            <div>
+            <div className='RoomForm__input'>
                 <input type='text' placeholder='(optional) password' value={password} onChange={handlePwChange}/>
                 <input type='text' placeholder='expiry date in days' value={expiry} onChange={handleExpiryChange}/>
             </div>
